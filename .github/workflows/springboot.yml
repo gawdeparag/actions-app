@@ -22,9 +22,7 @@ jobs:
           java-version: '17'
 
       - name: Setup Maven
-        uses: actions/setup-java@v4
-        with:
-          java-package: maven
+        run: mvn -B package --file pom.xml
 
       - name: Cache maven dependencies
         uses: actions/cache@v4
