@@ -21,11 +21,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build with Maven
-        run: mvn clean install -U
-
       - name: Locate dependencies and build offline
         run: mvn dependency:tree -o
+
+      - name: Build with Maven
+        run: mvn clean install -U
 
       - name: Run tests
         run: mvn test
