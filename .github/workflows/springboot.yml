@@ -12,35 +12,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup JDK 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
           java-version: '17'
-          java-package: 'jdk'
+          distribution: 'temurin'
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      - name: Upload Surefire Reports on failure
-        if: failure()
+      - name: Run tests
+        run: mvn test
+
+      # Upload Surefire Reports on test failure
+      - name: Upload Surefire Reports
+        if: failure()  # Upload only when tests fail
         uses: actions/upload-artifact@v4
         with:
           name: surefire-reports
           path: target/surefire-reports/
-
-      - name: Cache maven dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-maven
-
-      - name: Maven clean install
-        run: mvn clean install
-
-      - name: Run tests
-        run: mvn test
