@@ -22,7 +22,7 @@ jobs:
           java-version: '17'
           java-package: 'jdk'
 
-      - name: Setup Maven
+      - name: Build with Maven
         run: mvn -B package --file pom.xml
 
       - name: Upload Surefire Reports on failure
@@ -39,7 +39,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven
 
-      - name: Build with maven
+      - name: Maven clean install
         run: mvn clean install -e -X
 
       - name: Run tests
