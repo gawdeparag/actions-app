@@ -25,6 +25,13 @@ jobs:
       - name: Setup Maven
         run: mvn -B package --file pom.xml
 
+      - name: Upload Surefire Reports on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/
+
       - name: Cache maven dependencies
         uses: actions/cache@v4
         with:
