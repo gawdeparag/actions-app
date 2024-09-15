@@ -20,6 +20,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+          java-package: 'jdk'
 
       - name: Setup Maven
         run: mvn -B package --file pom.xml
