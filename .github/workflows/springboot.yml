@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -30,7 +30,7 @@ jobs:
       # Upload Surefire Reports on test failure
       - name: Upload Surefire Reports
         if: failure()  # Upload only when tests fail
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: surefire-reports
           path: target/surefire-reports/
