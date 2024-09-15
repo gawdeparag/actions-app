@@ -24,7 +24,7 @@ jobs:
       - name: Setup Maven
         uses: actions/setup-java@v4
         with:
-          java-packages: maven
+          java-package: maven
 
       - name: Cache maven dependencies
         uses: actions/cache@v4
