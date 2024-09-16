@@ -10,7 +10,22 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: actionsdb
+        ports:
+          - 3306
+        options:
+          --health-cmd="mysqladmin ping -h localhost"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,19 +36,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Locate dependencies and build offline
-        run: mvn dependency:tree -o
-
       - name: Build with Maven
-        run: mvn clean install -U
-
-      - name: Run tests
-        run: mvn test
-
-      # Upload Surefire Reports on test failure
-      - name: Upload Surefire Reports
-        if: failure()  # Upload only when tests fail
-        uses: actions/upload-artifact@v4
-        with:
-          name: surefire-reports
-          path: target/surefire-reports/
+        run: mvn clean test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/actionsdb
+          SPRING_DATASOURCE_USERNAME: root
